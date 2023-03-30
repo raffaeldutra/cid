@@ -49,7 +49,7 @@ Caso for contribuir com novas funções, pode-se adicionar no seu vscode o segui
   "Annotation for comments": {
     "prefix": ["shell-function-with-annotations"],
     "body": [
-			"# @function: ",
+      "# @function: ",
       "# @description: ",
       "# @arg: <VariableName>",
       "# @noargs",
@@ -57,10 +57,10 @@ Caso for contribuir com novas funções, pode-se adicionar no seu vscode o segui
       "# @exitcode 0 Sucesso",
       "# @exitcode 1 Função <FunctionName> não foi encontrada",
       "# @exitcode 1 Parâmetro <ParameterName> não foi definida",
-			"function FunctionName() {",
-			"",
-			"}",
-		],
+      "function FunctionName() {",
+      "",
+      "}",
+    ],
     "description": "Cria uma function com annotations para os comentários em Shell Script"
   }
 }
