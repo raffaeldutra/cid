@@ -1,0 +1,13 @@
+terraform
+.terraform*
+configs/.ssh
+.env.tfvars
+!configs/.ssh/config
+.ssh
+.credentials
+.DS_store
+.env.config
+clients
+!clients/client1-example
+.vscode
+cli*
