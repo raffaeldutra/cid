@@ -1,0 +1,108 @@
+version: '3.9'
+
+services:
+  # Template para configurações especificas dentro deste cliente, como arquivos
+  # de autenticação, por exemplo. Este serviço se baseará template de docker padão
+  # contido no ../../docker-compose.yml
+  docker-template:
+    container_name: docker-template
+
+    # Este arquivo abaixo não será commitada pelo git, portanto em caso de formatar sua máquina, este arquivo deverá
+    # ser recriado e adicionado na raiz do projeto.
+    # Mais detalhes podem ser vistos no bloco de configuração deste arquivo em secrets.
+    environment:
+      - TF_CLI_CONFIG_FILE=/root/terraformrc
+    extends:
+      file: ../../docker-compose.yml
+      service: docker-template-base
+
+  # Ambiente dev
+  docker-dev:
+    entrypoint: /bin/bash
+    container_name: docker-dev
+
+    # Caso deseja alterar o nome para o seu ambiente, seria bom alterar também o arquivo .bashrc pois lá temos cores
+    # referentes para cada ambiente setado no PS1 em Linux para diferenciar melhor e tentarmos evitar problemas achando
+    # que está em um ambiente porém se está no outro.
+    hostname: docker-dev
+
+    # Cada ambiente deverá conter suas varíaveis, ainda mais se estivermos em testes de novas versões de ferramentas.
+    env_file:
+      - .env.common
+      - .env.dev
+      - ../../.credentials/client1-example/envs/env.dev
+
+    # Arquivos que devem ser tratados como sensíveis devem ser adicionados aqui e mencionados abaixo na seção secrets
+    # deste arquivo.
+    secrets:
+      # Credenciais da AWS, pode ser passado todo o arquivo com várias contas se for
+      # preciso necessário, pois por variavel de ambiente que será utilizado o necessário
+      # como por exemplo o AWS_PROFILE
+      - source: aws_credentials_dev
+        target: /root/.aws/credentials
+
+      # Apenas para lembre rápido:
+      # Windows o nome do arquivo precisa ser terraform.rc
+      # Linux o nome do arquivo precisa ser .terraformrc
+      # Ambos devem estar no seu $HOME
+      - source: terraformrc_dev
+        target: /root/.terraformrc
+
+    # Busca o template para o container no arquivo ../../docker-compose.yml
+    # Cuidado ao remover algo de lá, deve-se alterar todos os container que dependem para o novo nome
+    extends:
+      service: docker-template
+    volumes:
+      - dot-kube-dev:/root/.kube
+      - app-dev:/app
+      - ../../bootstrap/bootstrap.sh:/tmp/bootstrap.sh
+
+  # Ambiente qa
+  # Praticamente a mesma coisa se aplica aqui do que o ambiente dev
+  docker-qa:
+    entrypoint: /bin/bash
+    container_name: docker-qa
+    hostname: docker-qa
+    env_file:
+      - .env.common
+      - .env.qa
+    extends:
+      service: docker-template
+    volumes:
+      - dot-kube-qa:/root/.kube
+      - app-qa:/app
+
+  docker-python:
+    entrypoint: /bin/bash
+    container_name: docker-python
+    hostname: docker-python
+    extends:
+      service: docker-template
+
+  # Exemplo de utilização do docsy como solução para documentação
+  docker-docs:
+    container_name: docker-docs
+    image: docsy/docsy-example
+    build:
+      context: ../../../docs
+
+    # Local padrão para buscar a documentação.
+    volumes:
+      - ../../../docs:/src
+
+    # Comando de inicialização do Hugo pera rodar em modo servidor.
+    # Aqui temos outras opções, para o contexto de desenvolvimento de documentação
+    # utilizamos apenas server
+    command: server
+    ports:
+      - "1313:1313"
+
+# Volumes utilizados na solução do ambiente.
+volumes:
+  # Todas ferramentas que forem instaladas e reaproveitadas por outros containers
+  app-dev:
+  app-qa:
+
+  # Quando o Terraform rodar, será criado um arquivo com o mesmo nome do cluster persistido aqui dentro.
+  dot-kube-dev:
+  dot-kube-qa:
