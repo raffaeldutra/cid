@@ -1,0 +1,80 @@
+# Rever as configs de arquivos utilizando o link abaixo
+# https://docs.docker.com/compose/compose-file/#configs-top-level-element
+
+services:
+  # Imagem base utilizada.
+  # Verifique o Dockerfile para saber o que está sendo instalado.
+  base:
+    container_name: base-image
+    image: "${CLIENT_NAME}/base-tools"
+    working_dir: /root
+    build:
+      context: .
+      args:
+        ARCH: ${ARCH:-linux/amd64}
+    volumes:
+      # Configurações para Bash onde existem algumas personalizações
+      - ./configs/.bashrc:/root/.bashrc
+      - ./configs/.bash_aliases:/root/.bash_aliases
+      - ./configs/.bash_colors:/root/.bash_colors
+
+      # Configurações para Git
+      - ./configs/.gitconfig:/root/.gitconfig
+
+      # Configurações para Vim
+      - ./configs/.vimrc:/root/.vimrc
+
+      - ./configs/.inputrc:/root/.inputrc
+      - ./bootstrap/install-packages.sh:/root/install-packages.sh
+
+      # Configuração do ambiente para selecionar apenas o que desejar
+      - ./.env.config:/root/.env.config
+
+      # File system em read only.
+      # No momento nao é possivel utilizar como secret o diretorio .ssh, problemas
+      # com permissionamento quando executar git push retorando bad permissions por
+      # ser aberto demais.
+      - ${HOME}/.ssh:/root/.ssh:rw
+    network_mode: host
+
+  # docker-compose run install-tools
+  install-tools:
+    # Quando iniciar o container, automaticamente será chamado o script para fazer
+    # intalação de todas ferramentas ali definidas.
+    command: bash /tmp/bootstrap.sh
+    extends:
+      service: base
+    volumes:
+      # Este arquivo faz a instalação do que for definido nele. Geralmente apenas
+      # chamamos o nome da função que desejamos instalar. Os scripts de instalação
+      # das ferramentas em si estão em volume no arquivo commom.yml
+      - ./bootstrap/bootstrap.sh:/tmp/bootstrap.sh
+
+  # Template utilizado pela maioria dos containers que rodam bash.
+  # Toda a base do que deverá ter no container está vindo do arquivo commom.yml
+  docker-template-base:
+    container_name: docker-template-base
+
+    # Este arquivo abaixo não será commitada pelo git, portanto em caso de formatar
+    # sua máquina, este arquivo deverá ser recriado e adicionado na raiz do projeto.
+    # Mais detalhes podem ser vistos no bloco de configuração deste arquivo em secrets.
+    environment:
+      - TF_CLI_CONFIG_FILE=/root/terraformrc
+    extends:
+      service: base
+    volumes:
+      # Arquivos para linha de comando
+      - ./cli:/root/cli
+      - ./cli/cli.sh:/usr/bin/cli
+
+      # Local onde montamos o diretório do Terraform na sua máquina. Deverá ser este path
+      # Caso o diretório não seja encontrado, irá falhar.
+      # Consulte o arquivo README.md para mais detalhes.
+      - ../terraform/aws:/root/terraform/aws:cached
+
+      # Projetos
+      - ../projects:/root/projects:cached
+    stdin_open: true
+    tty: true
+    mem_limit: 256M
+    network_mode: host
