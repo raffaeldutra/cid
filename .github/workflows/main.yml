@@ -1,0 +1,35 @@
+name: test
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: container-up
+        run: |
+          cp -av .env.config.example .env.config || echo "Arquivo não encontrado"
+
+          docker compose \
+          -f $(pwd)/clients/client1-example/client1-example.secrets.yml \
+          -f $(pwd)/clients/client1-example/client1-example.containers.yml \
+          --env-file=$(pwd)/clients/client1-example/.env.common \
+          run --rm docker-dev
+
+      - name: test-function
+        run: |
+          cp -av .env.config.example .env.config || echo "Arquivo não encontrado"
+
+          docker compose \
+          -f $(pwd)/clients/client1-example/client1-example.secrets.yml \
+          -f $(pwd)/clients/client1-example/client1-example.containers.yml \
+          --env-file=$(pwd)/clients/client1-example/.env.common \
+          run --rm docker-dev \
+          -c "bash cli/cli.sh -osgt"
