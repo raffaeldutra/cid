@@ -268,7 +268,9 @@ case "$1" in
   * )
     # Faz include dos arquivos que foram selecionados no arquivo .env.config
     for ToolsToInclude in ${ENV_CONFIG_TOOLS[@]}; do
-      source "${CLI_FULL_PATH}/src/${ToolsToInclude}.sh"
+      if [ -f "${CLI_FULL_PATH}/src/${ToolsToInclude}.sh" ]; then
+        source "${CLI_FULL_PATH}/src/${ToolsToInclude}.sh"
+      fi
 
       # Arquivo kubernetes.sh
       if [ "${ToolsToInclude}" == "kubernetes" ]; then
