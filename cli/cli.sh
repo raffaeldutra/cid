@@ -79,6 +79,8 @@ Funções para Kubernetes
   -kgss    | KubernetesGetSpecificSecret                    Mostra uma determinada secret
   -kgs     | KubernetesGetAllSecrets                        Lista todas as secrets de um cluster
 
+  Services
+  -klas    | KubernetesListAllServices                      Lista todos os seriços
 
   -ktp     | KubernetesListTopPodsBy                        Lista todos os pods por cpu ou memória (default: memória)
   Exemplos:
@@ -292,6 +294,10 @@ case "$1" in
             KubernetesGetSpecificSecret ;;
           -kgs     )
             KubernetesGetAllSecrets ;;
+
+          # Services
+          -klas     )
+            KubernetesListAllServices ;;
         esac
       fi
 
