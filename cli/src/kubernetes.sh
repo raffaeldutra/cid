@@ -145,3 +145,15 @@ EOT
     head -n ${KubernetesTop}
   fi
 }
+
+# @function: KubernetesListAllServices
+# @description: Lista todos os serviços
+# @noargs
+# @return: String
+# @exitcode 0 Sucesso
+function KubernetesListAllServices() {
+  kubectl \
+  --no-headers \
+  --all-namespaces \
+  get svc
+}
