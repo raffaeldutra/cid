@@ -54,7 +54,7 @@ services:
       service: docker-template
     volumes:
       - dot-kube-dev:/root/.kube
-      - app-dev:/app
+      - app-dev:${ENV_DIRECTORY_INSTALLATION}
       - ../../bootstrap/bootstrap.sh:/tmp/bootstrap.sh
 
   # Ambiente qa
@@ -70,7 +70,7 @@ services:
       service: docker-template
     volumes:
       - dot-kube-qa:/root/.kube
-      - app-qa:/app
+      - app-qa:${ENV_DIRECTORY_INSTALLATION}
 
   docker-python:
     entrypoint: /bin/bash

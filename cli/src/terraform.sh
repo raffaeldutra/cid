@@ -1,4 +1,4 @@
-declare TerraformVersionsPath="/app/terraform-versions"
+declare TerraformVersionsPath="${ENV_DIRECTORY_INSTALLATION}/terraform-versions"
 
 # @function: TerraformInitCommand
 # @description: Reposável por mostrar o comando terraform init já formato para os ambientes.
@@ -154,7 +154,7 @@ function TerraformSetVersion() {
 
   TerraformVersionExists ${TerraformVersion}
 
-  ln -sf ${TerraformVersionsPath}/${TerraformVersion}/terraform /app/terraform
+  ln -sf ${TerraformVersionsPath}/${TerraformVersion}/terraform ${ENV_DIRECTORY_INSTALLATION}/terraform
 }
 
 # @function: TerraformGetCurrentWorkspace

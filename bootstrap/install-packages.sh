@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# echo "Removendo pacotes antigos" && rm -rf /app/*
+# echo "Removendo pacotes antigos" && rm -rf ${ENV_DIRECTORY_INSTALLATION}/*
 
 function install_kubectl() {
   local arch="amd64"
@@ -9,11 +9,11 @@ function install_kubectl() {
     local arch="arm64"
   fi
 
-  if [ ! -e /app/kubectl-${KUBECTL_VERSION} ]; then
+  if [ ! -e ${ENV_DIRECTORY_INSTALLATION}/kubectl-${KUBECTL_VERSION} ]; then
     wget https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${arch}/kubectl
-    mv kubectl /app/kubectl-${KUBECTL_VERSION}
-    ln -sf /app/kubectl-${KUBECTL_VERSION} /app/kubectl
-    chmod +x /app/kubectl-${KUBECTL_VERSION}
+    mv kubectl ${ENV_DIRECTORY_INSTALLATION}/kubectl-${KUBECTL_VERSION}
+    ln -sf ${ENV_DIRECTORY_INSTALLATION}/kubectl-${KUBECTL_VERSION} ${ENV_DIRECTORY_INSTALLATION}/kubectl
+    chmod +x ${ENV_DIRECTORY_INSTALLATION}/kubectl-${KUBECTL_VERSION}
   fi
 }
 
@@ -26,15 +26,15 @@ function install_aws() {
 
   package="awscli-exe-linux-${arch}-${AWS_CLI_VERSION}.zip"
 
-  if [ ! -e /app/aws-cli-${AWS_CLI_VERSION} ]; then
+  if [ ! -e ${ENV_DIRECTORY_INSTALLATION}/aws-cli-${AWS_CLI_VERSION} ]; then
     wget https://awscli.amazonaws.com/${package}
     unzip -q ${package}
     ./aws/install --update \
-    --install-dir /app/aws-cli-${AWS_CLI_VERSION} \
-    --bin-dir /app/aws-cli-bin-${AWS_CLI_VERSION} >/dev/null
+    --install-dir ${ENV_DIRECTORY_INSTALLATION}/aws-cli-${AWS_CLI_VERSION} \
+    --bin-dir ${ENV_DIRECTORY_INSTALLATION}/aws-cli-bin-${AWS_CLI_VERSION} >/dev/null
 
-    ln -sf /app/aws-cli-${AWS_CLI_VERSION} /app/aws-cli
-    ln -sf /app/aws-cli-bin-${AWS_CLI_VERSION} /app/aws-cli-bin
+    ln -sf ${ENV_DIRECTORY_INSTALLATION}/aws-cli-${AWS_CLI_VERSION} ${ENV_DIRECTORY_INSTALLATION}/aws-cli
+    ln -sf ${ENV_DIRECTORY_INSTALLATION}/aws-cli-bin-${AWS_CLI_VERSION} ${ENV_DIRECTORY_INSTALLATION}/aws-cli-bin
 
     rm ${package}
   fi
@@ -49,33 +49,33 @@ function install_istioctl() {
 
   ISTIO_PACKAGE="istio-${ISTIOCTL_VERSION}-linux-${arch}.tar.gz"
 
-  if [ ! -e /app/istioctl-${ISTIOCTL_VERSION} ]; then
+  if [ ! -e ${ENV_DIRECTORY_INSTALLATION}/istioctl-${ISTIOCTL_VERSION} ]; then
     wget "https://storage.googleapis.com/istio-release/releases/${ISTIOCTL_VERSION}/${ISTIO_PACKAGE}"
 
     tar -xzf "${ISTIO_PACKAGE}" >/dev/null
     rm ${ISTIO_PACKAGE}
-    cp -a istio-${ISTIOCTL_VERSION}/bin/istioctl /app/istioctl-${ISTIOCTL_VERSION}
-    ln -sf /app/istioctl-${ISTIOCTL_VERSION} /app/istioctl
+    cp -a istio-${ISTIOCTL_VERSION}/bin/istioctl ${ENV_DIRECTORY_INSTALLATION}/istioctl-${ISTIOCTL_VERSION}
+    ln -sf ${ENV_DIRECTORY_INSTALLATION}/istioctl-${ISTIOCTL_VERSION} ${ENV_DIRECTORY_INSTALLATION}/istioctl
 
-    PATH="$PATH:/app/istioctl"
+    PATH="$PATH:${ENV_DIRECTORY_INSTALLATION}/istioctl"
   fi
 }
 
 function install_helm() {
   export VERIFY_CHECKSUM=false
 
-  if [ ! -e /app/helm ]; then
+  if [ ! -e ${ENV_DIRECTORY_INSTALLATION}/helm ]; then
     wget https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-${HELM_VERSION}
     bash get-helm-${HELM_VERSION} >/dev/null
-    mv /usr/local/bin/helm /app/helm
+    mv /usr/local/bin/helm ${ENV_DIRECTORY_INSTALLATION}/helm
   fi
 }
 
 function install_kustomize() {
-  if [ ! -e /app/kustomize ]; then
+  if [ ! -e ${ENV_DIRECTORY_INSTALLATION}/kustomize ]; then
     wget "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
     bash install_kustomize.sh >/dev/null
-    mv /root/kustomize /app/kustomize
+    mv /root/kustomize ${ENV_DIRECTORY_INSTALLATION}/kustomize
   fi
 }
 
@@ -86,9 +86,9 @@ function install_argo() {
     local package="argocd-linux-arm64"
   fi
 
-  if [ ! -e /app/argocd ]; then
+  if [ ! -e ${ENV_DIRECTORY_INSTALLATION}/argocd ]; then
     wget "https://github.com/argoproj/argo-cd/releases/download/${ARGO_VERSION}/${package}"
-    install -m 555 ${package} /app/argocd
+    install -m 555 ${package} ${ENV_DIRECTORY_INSTALLATION}/argocd
     rm ${package}
   fi
 }
