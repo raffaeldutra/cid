@@ -89,7 +89,7 @@ function KubernetesGenerateCacheInformationsPS1() {
 # @exitcode 1 Parâmetro ENV_CONFIG_BASH não foi definido no arquivo .env.config
 # @exitcode 1 Função KubernetesGetCurrentNamespace não foi encontrada
 function EnvironmentLoadPS1() {
-  PS1="\n[ \$(OsGetTime) \${COLOR}\h@\u\${_RESET} :\w ]"
+  PS1="\n[ \$(OsGetTime) \${CLIENT_NAME} | \${COLOR}\h@\u\${_RESET} :\w ]"
 
   if [ -z "${ENV_CONFIG_BASH}" ]; then
     echo "Parâmetro ENV_CONFIG_BASH não foi definido no arquivo .env.config"
