@@ -12,4 +12,4 @@ install_kustomize
 install_argo
 show_versions
 
-> /app/.finished
+> ${ENV_DIRECTORY_INSTALLATION}/.finished

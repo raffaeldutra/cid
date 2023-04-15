@@ -150,7 +150,7 @@ fi
 
 ShowPercentBar 100
 
-if [ -z "$(ls -A -- "/app")" -o ! -f /app/.finished ]; then
+if [ -z "$(ls -A -- "${ENV_DIRECTORY_INSTALLATION}")" -o ! -f ${ENV_DIRECTORY_INSTALLATION}/.finished ]; then
   echo "Parece que o diretório com ferramentas de linha de comando está vazio/incompleto."
   echo "Aguarde até o processo terminar, pode demorar um pouco."; sleep 3; echo
 
