@@ -157,3 +157,26 @@ function KubernetesListAllServices() {
   --all-namespaces \
   get svc
 }
+
+# @function: KubernetesListServicesIgnoringFromList
+# @description: Lista todos os serviços excluindo aqueles que o usuário não deseja no arquivo .env.config
+# @noargs
+# @return: String
+# @exitcode 0 Sucesso
+# @exitcode 1 Função KubernetesListAllServices não foi encontrada
+function KubernetesListServicesIgnoringFromList() {
+  if [ "$(type -t KubernetesListAllServices)" != "function" ]; then
+    echo "${FUNCNAME[0]}: Função KubernetesListAllServices não encontrada"
+
+    return 1
+  fi
+
+  if [ -z ${KUBERNETES_REMOVE_NAMESPACES} ]; then
+    echo "${FUNCNAME[0]}: KUBERNETES_REMOVE_NAMESPACES não foi informado no arquivo .env.config"
+
+    return 1
+  fi
+
+  KubernetesListAllServices | \
+  grep -Evf <(printf '%s\n' "${KUBERNETES_REMOVE_NAMESPACES[@]}")
+}
