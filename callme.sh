@@ -12,11 +12,10 @@ source $(pwd)/cli/src/git.sh
 source $(pwd)/cli/src/os.sh
 source $(pwd)/cli/src/misc.sh
 
-# Para donos do Mac M*
-export ARCH="x86_64"
+export ARCH="$(arch)"
 
-if [ "$(arch)" == "arm64" ]; then
-  export ARCH="arm64"
+if [ -n "${ENV_DOCKERFILE_ARCH}" ]; then
+  export ARCH=${ENV_DOCKERFILE_ARCH}
 fi
 
 function ContainersClientGetList() {
