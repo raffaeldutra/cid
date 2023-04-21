@@ -154,6 +154,13 @@ if [ -z "$(ls -A -- "${ENV_DIRECTORY_INSTALLATION}")" -o ! -f ${ENV_DIRECTORY_IN
   echo "Parece que o diretório com ferramentas de linha de comando está vazio/incompleto."
   echo "Aguarde até o processo terminar, pode demorar um pouco."; sleep 3; echo
 
+  if [ ! -e "/tmp/bootstrap.sh" ]; then
+    echo "Arquivo para instalação inicial não foi encontrado, saindo..."
+    sleep 5
+
+    exit 1
+  fi
+
   bash /tmp/bootstrap.sh
 
   if [ $? -ne 0 ]; then
