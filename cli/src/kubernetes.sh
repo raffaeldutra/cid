@@ -180,3 +180,21 @@ function KubernetesListServicesIgnoringFromList() {
   KubernetesListAllServices | \
   grep -Evf <(printf '%s\n' "${KUBERNETES_REMOVE_NAMESPACES[@]}")
 }
+
+# @function: KubernetesAmountServicesIgnoringNamespaces
+# @description: Retorna a quantidade de serviços que estão rodando no cluster ignorando namespaces espficiados.
+# @noargs
+# @return: Number
+# @exitcode 0 Sucesso
+# @exitcode 1 Função KubernetesListAllServices não foi encontrada
+function KubernetesAmountServicesIgnoringNamespaces() {
+  if [ "$(type -t KubernetesListAllServices)" != "function" ]; then
+    echo "Função KubernetesListAllServices não encontrada"
+
+    return 1
+  fi
+
+  KubernetesListAllServices | \
+  grep -Evf <(printf '%s\n' "${KUBERNETES_REMOVE_NAMESPACES[@]}") | \
+  wc -l
+}
