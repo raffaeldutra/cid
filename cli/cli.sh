@@ -82,7 +82,11 @@ Funções para Kubernetes
   Services
   -klas    | KubernetesListAllServices                      Lista todos os seriços
   -klase   | KubernetesListServicesIgnoringFromList         Lista todos os seriços ignorando os específicados pelo usuário no .env.config
+<<<<<<< HEAD
   -kas     | KubernetesAmountServices                       Mostra a quantidade de serviços que estão no cluster
+=======
+  -kasin   | KubernetesAmountServicesIgnoringNamespaces     Mostra quantidade de serviços que estão no cluster ignorando namespaces específicados pelo usuário no .env.config
+>>>>>>> main
 
   -ktp     | KubernetesListTopPodsBy                        Lista todos os pods por cpu ou memória (default: memória)
   Exemplos:
@@ -304,6 +308,8 @@ case "$1" in
             KubernetesListServicesIgnoringFromList ;;
           -kas    )
             KubernetesAmountServices ;;
+          -kasin    )
+            KubernetesAmountServicesIgnoringNamespaces ;;
         esac
       fi
 
