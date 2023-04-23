@@ -144,7 +144,13 @@ function HelperPandocCreatePDFFromMarkdown() {
 # @return: void
 # @exitcode 0 Sucesso
 function HelperGetPasswordArgoCD() {
-  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | \
+  if [ -z ${ENV_HELPER_KUBERNETES_NAMESPACE_ARGOCD} ]; then
+    echo "${FUNCNAME[0]}: Não foi específicado o namespace do argocd, saindo"
+
+    return 1
+  fi
+
+  kubectl -n ${ENV_HELPER_KUBERNETES_NAMESPACE_ARGOCD} get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | \
   base64 -d
   echo
 }
@@ -155,7 +161,13 @@ function HelperGetPasswordArgoCD() {
 # @return: void
 # @exitcode 0 Sucesso
 function HelperGetPasswordGrafana() {
-  kubectl get secret -n monitoring grafana -o jsonpath="{.data.admin-password}" | \
+  if [ -z ${ENV_HELPER_KUBERNETES_NAMESPACE_GRAFANA} ]; then
+    echo "${FUNCNAME[0]}: Não foi específicado o namespace do grafana, saindo"
+
+    return 1
+  fi
+
+  kubectl get secret -n ${ENV_HELPER_KUBERNETES_NAMESPACE_GRAFANA} grafana -o jsonpath="{.data.admin-password}" | \
   base64 -d
   echo
 }
@@ -166,5 +178,11 @@ function HelperGetPasswordGrafana() {
 # @return: void
 # @exitcode 0 Sucesso
 function HelperGetPasswordDashboard() {
-  kubectl -n kube-dashboard describe secret kubernetes-dashboard-token-fnbx9
+  if [ -z ${ENV_HELPER_KUBERNETES_NAMESPACE_K8S_DASHBOARD} ]; then
+    echo "${FUNCNAME[0]}: Não foi específicado o namespace do Dashboard do Kubernetes, saindo"
+
+    return 1
+  fi
+
+  kubectl -n ${ENV_HELPER_KUBERNETES_NAMESPACE_K8S_DASHBOARD} describe secret kubernetes-dashboard-token-fnbx9
 }
