@@ -166,6 +166,14 @@ function spin()
   done
 }
 
+function InstallSystemDocker() {
+  if ! [ -x "$(command -v docker compose)" ]; then
+    echo "Não foi encontrado uma instalação de Docker, saindo" >&2
+
+    exit 1
+  fi
+}
+
 function InstallSystemDialog() {
   if [ "$(OsDetectOS)" == "Windows" ]; then
     echo "Desculpe, mas o ambiente só funciona em Sistema Operacional, saindo."
@@ -183,6 +191,7 @@ function InstallSystemDialog() {
     fi
   else
     echo "Sistema não foi detectado, saindo.."
+>>>>>>> main
 
     exit 1
   fi
@@ -220,6 +229,7 @@ case "$1" in
   -check )
     echo "Fazendo verificação dos arquivos de configuração necessários.."
     InstallSystemVerifyFiles
+    InstallSystemDocker
     InstallSystemDialog
   ;;
   -h | --help )
