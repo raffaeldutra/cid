@@ -52,6 +52,8 @@ _WHYTE=$(tput setaf 7)
 _RESET=$(tput sgr0)
 _BOLD=$(tput bold)
 
+source $(pwd)/cli/src/os.sh
+
 # Pede para inserir o nome do cliente que este instalador irá realizar, assim é possível utilizar
 # em mais de um cliente se for necessário, apenas informar na CLI.
 declare ClientName="${1}"
@@ -172,6 +174,28 @@ function InstallSystemDocker() {
   fi
 }
 
+function InstallSystemDialog() {
+  if [ "$(OsDetectOS)" == "Windows" ]; then
+    echo "Desculpe, mas o ambiente só funciona em Sistema Operacional, saindo."
+
+    exit 1
+  elif [ "$(OsDetectOS)" == "Linux" ]; then
+    if ! [ -x "$(command -v dialog)" ]; then
+      sudo apt-get update --yes
+      sudo apt-get install --yes dialog
+    fi
+  elif [ "$(OsDetectOS)" == "Mac" ]; then
+    if ! [ -x "$(command -v dialog)" ]; then
+      which brew >/dev/null
+      brew install dialog || (echo "Brew não encontrado, saindo" && exit 1)
+    fi
+  else
+    echo "Sistema não foi detectado, saindo.."
+>>>>>>> main
+
+    exit 1
+  fi
+}
 
 case "$1" in
   -run )
@@ -206,6 +230,7 @@ case "$1" in
     echo "Fazendo verificação dos arquivos de configuração necessários.."
     InstallSystemVerifyFiles
     InstallSystemDocker
+    InstallSystemDialog
   ;;
   -h | --help )
     help ;;
