@@ -173,8 +173,8 @@ function InstallSystemDialog() {
     exit 1
   elif [ "$(OsDetectOS)" == "Linux" ]; then
     if ! [ -x "$(command -v dialog)" ]; then
-      apt-get update --yes
-      apt-get install --yes dialog
+      sudo apt-get update --yes
+      sudo apt-get install --yes dialog
     fi
   elif [ "$(OsDetectOS)" == "Mac" ]; then
     if ! [ -x "$(command -v dialog)" ]; then
