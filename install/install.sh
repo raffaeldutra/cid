@@ -164,6 +164,15 @@ function spin()
   done
 }
 
+function InstallSystemDocker() {
+  if ! [ -x "$(command -v docker compose)" ]; then
+    echo "Não foi encontrado uma instalação de Docker, saindo" >&2
+
+    exit 1
+  fi
+}
+
+
 case "$1" in
   -run )
     help
@@ -196,6 +205,7 @@ case "$1" in
   -check )
     echo "Fazendo verificação dos arquivos de configuração necessários.."
     InstallSystemVerifyFiles
+    InstallSystemDocker
   ;;
   -h | --help )
     help ;;
