@@ -9,7 +9,6 @@ bash install/install.sh -check
 source $(pwd)/.env.config
 source $(pwd)/cli/src/docker.sh
 source $(pwd)/cli/src/git.sh
-source $(pwd)/cli/src/os.sh
 source $(pwd)/cli/src/misc.sh
 
 export ARCH="$(arch)"
@@ -31,30 +30,6 @@ function ContainersClientGetList() {
   awk '{print $2}' | \
   grep -v docker-template
 }
-
-# A função OsDetectOS detecta o sistema operacional em que o script está sendo executado. A função utiliza o comando uname
-# para verificar o nome do sistema e retorna uma das seguintes opções: Windows, Linux ou Mac. Caso a detecção não seja
-# bem-sucedida, a função retorna uma string vazia.
-if [ "$(OsDetectOS)" == "Windows" ]; then
-  echo "Desculpe, mas o ambiente só funciona em Sistema Operacional, saindo."
-
-  exit 1
-fi
-
-# Caso o sistema operacional detectado seja o Linux, o script verifica se o comando dialog está instalado no sistema. Caso não
-# esteja, o script utiliza o gerenciador de pacotes apt-get para instalar o dialog. Caso o gerenciador de pacotes não esteja
-# instalado ou ocorra algum erro na instalação do dialog, o script exibe uma mensagem de erro informando que a "Família Linux
-#não foi encontrada" e encerra.
-if [ "$(OsDetectOS)" == "Linux" ]; then
-  $(which dialog) || ($(which apt-get >/dev/null) && (apt-get update --yes && apt-get install --yes dialog) || echo "Familia Linux não encontrada, saindo")
-fi
-
-# Caso o sistema operacional detectado seja o Mac, o script verifica se o comando dialog está instalado no sistema. Caso não esteja,
-# o script utiliza o gerenciador de pacotes brew para instalar o dialog. Caso o gerenciador de pacotes não esteja instalado ou ocorra
-# algum erro na instalação do dialog, o script exibe uma mensagem de erro informando que o "Brew não foi encontrado" e encerra
-if [ "$(OsDetectOS)" == "Mac" ]; then
-  $(which dialog >/dev/null) || ($(which brew >/dev/null) && brew install dialog || echo "Brew não encontrado, saindo")
-fi
 
 # Caso a variável booleana JOKE_CHUCK_NORRIS seja definida como verdadeira, o script exibe uma caixa de diálogo com uma piada
 # do Chuck Norris. A piada é gerada pela função JokeChuckNorris. Em seguida, o script aguarda por 10 segundos antes de continuar
