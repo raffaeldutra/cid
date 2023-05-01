@@ -12,6 +12,7 @@ services:
       context: .
       args:
         ARCH: ${ARCH:-linux/amd64}
+      network: host
     volumes:
       # Configurações para Bash onde existem algumas personalizações
       - ./configs/.bashrc:/root/.bashrc
@@ -35,7 +36,6 @@ services:
       # com permissionamento quando executar git push retorando bad permissions por
       # ser aberto demais.
       - ${HOME}/.ssh:/root/.ssh:rw
-    network_mode: host
 
   # docker-compose run install-tools
   install-tools:
