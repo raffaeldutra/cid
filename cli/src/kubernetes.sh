@@ -194,6 +194,12 @@ function KubernetesAmountServicesIgnoringNamespaces() {
     return 1
   fi
 
+  if [ -z ${KUBERNETES_REMOVE_NAMESPACES} ]; then
+    echo "${FUNCNAME[0]}: KUBERNETES_REMOVE_NAMESPACES não foi informado no arquivo .env.config"
+
+    return 1
+  fi
+
   KubernetesListAllServices | \
   grep -Evf <(printf '%s\n' "${KUBERNETES_REMOVE_NAMESPACES[@]}") | \
   wc -l
