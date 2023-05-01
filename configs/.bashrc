@@ -91,6 +91,10 @@ function KubernetesGenerateCacheInformationsPS1() {
 function EnvironmentLoadPS1() {
   PS1="\n[ \$(OsGetTime) \${CLIENT_NAME} | \${COLOR}\h@\u\${_RESET} :\w ]"
 
+  if [ -n ${ENV_DATE_TIMEZONE_PS1} -a ${ENV_DATE_TIMEZONE_PS1} = true ]; then
+    PS1="\n[ \$(date +%z) \$(OsGetTime) \${CLIENT_NAME} | \${COLOR}\h@\u\${_RESET} :\w ]"
+  fi
+
   if [ -z "${ENV_CONFIG_BASH}" ]; then
     echo "Parâmetro ENV_CONFIG_BASH não foi definido no arquivo .env.config"
 
