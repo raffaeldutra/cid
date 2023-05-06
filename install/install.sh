@@ -191,7 +191,6 @@ function InstallSystemDialog() {
     fi
   else
     echo "Sistema não foi detectado, saindo.."
->>>>>>> main
 
     exit 1
   fi
