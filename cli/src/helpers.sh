@@ -31,11 +31,11 @@ EOT
 # @return: void
 # @exitcode 0 Sucesso
 function HelperPodTemplate() {
-  declare HelperNamespace="${1}"
-  declare HelperImage="${2}"
-  declare HelperVersion="${3}"
-  declare HelperRandomChars=${RANDOM}
-  declare HelperPodName="helper-${HelperImage}-${HelperRandomChars}"
+  local HelperNamespace="${1}"
+  local HelperImage="${2}"
+  local HelperVersion="${3}"
+  local HelperRandomChars=${RANDOM}
+  local HelperPodName="helper-${HelperImage}-${HelperRandomChars}"
 
   echo "Criando pod ${PodName}"
 
@@ -59,7 +59,7 @@ function HelperPodTemplate() {
 # @exitcode 0 Sucesso
 # @exitcode 1
 function HelperKubernetesVanillaPodUbuntu() {
-  declare HelperPodName=${1}
+  local HelperPodName=${1}
 
   kubectl run \
   --restart=Never \
@@ -85,9 +85,9 @@ function HelperKubernetesPodUbuntu() {
     return 1
   fi
 
-  declare HelperNamespace="${1:-default}"
-  declare HelperImage="${2:-ubuntu}"
-  declare HelperVersion="${3:-22.04}"
+  local HelperNamespace="${1:-default}"
+  local HelperImage="${2:-ubuntu}"
+  local HelperVersion="${3:-22.04}"
 
   HelperPodTemplate ${HelperNamespace} ${HelperImage} ${HelperVersion}
 }
@@ -100,9 +100,9 @@ function HelperKubernetesPodUbuntu() {
 # @return: void
 # @exitcode 0 Sucesso
 function HelperKubernetesPodNginx() {
-  declare HelperNamespace="${1:-default}"
-  declare HelperImage="${2:-nginx}"
-  declare HelperVersion="${3:-1.23.1}"
+  local HelperNamespace="${1:-default}"
+  local HelperImage="${2:-nginx}"
+  local HelperVersion="${3:-1.23.1}"
 
   HelperPodTemplate ${HelperNamespace} ${HelperImage} ${HelperVersion}
 }

@@ -6,6 +6,10 @@ Objetivo deste projeto é ter um ponto único para vários projetos (chamados de
 
 Todo o projeto está sendo criado em BASH Shell Script para fácil compreensão de Administradores de Sistemas e/ou pessoas que querem um pouco mais de "simplicidade" para um ambiente de desenvolvimento para seus projetos/clientes com diversos ambientes.
 
+## Terraform
+
+Não é necessário informar qual versão de Terraform deseja utilizar, isso será automaticamente feito pelo arquivos `versions.tf` e quando encontra a string `required_version` o projeto irá automaticamente baixar a versão selecionada.
+
 ## Estrutura de diretórios necessário
 
 O mínimo que sua estrutura deve ter é a seguinte:
