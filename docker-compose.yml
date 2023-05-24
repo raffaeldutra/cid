@@ -34,7 +34,7 @@ services:
       # No momento nao é possivel utilizar como secret o diretorio .ssh, problemas
       # com permissionamento quando executar git push retorando bad permissions por
       # ser aberto demais.
-      - ${HOME}/.ssh:/root/.ssh:rw
+      - ${HOME}/.ssh/${CLIENT_NAME}:/root/.ssh:rw
     network_mode: host
 
   # docker-compose run install-tools
@@ -55,26 +55,13 @@ services:
   docker-template-base:
     container_name: docker-template-base
 
-    # Este arquivo abaixo não será commitada pelo git, portanto em caso de formatar
-    # sua máquina, este arquivo deverá ser recriado e adicionado na raiz do projeto.
-    # Mais detalhes podem ser vistos no bloco de configuração deste arquivo em secrets.
-    environment:
-      - TF_CLI_CONFIG_FILE=/root/terraformrc
     extends:
       service: base
     volumes:
       # Arquivos para linha de comando
       - ./cli:/root/cli
       - ./cli/cli.sh:/usr/bin/cli
-
-      # Local onde montamos o diretório do Terraform na sua máquina. Deverá ser este path
-      # Caso o diretório não seja encontrado, irá falhar.
-      # Consulte o arquivo README.md para mais detalhes.
-      - ../terraform/aws:/root/terraform/aws:cached
-
-      # Projetos
-      - ../projects:/root/projects:cached
     stdin_open: true
     tty: true
-    mem_limit: 256M
+    mem_limit: 1024M
     network_mode: host
