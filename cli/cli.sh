@@ -84,7 +84,6 @@ Funções para Kubernetes
   -klase   | KubernetesListServicesIgnoringFromList         Lista todos os seriços ignorando os específicados pelo usuário no .env.config
   -kas     | KubernetesAmountServices                       Mostra a quantidade de serviços que estão no cluster
   -kasin   | KubernetesAmountServicesIgnoringNamespaces     Mostra quantidade de serviços que estão no cluster ignorando namespaces específicados pelo usuário no .env.config
-
   -ktp     | KubernetesListTopPodsBy                        Lista todos os pods por cpu ou memória (default: memória)
   Exemplos:
     Listar todos os pods de todos os namespaces por memoria
