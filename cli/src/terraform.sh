@@ -53,6 +53,17 @@ function TerraformInitCommand() {
   fi
 }
 
+# @function: TerraformDocsInstall
+# @description: Faz instalação do Terraform Docs
+# @noargs
+# @return: String
+# @exitcode 0 Sucesso
+function TerraformDocsInstall() {
+  curl -sSLo /tmp/terraform-docs.tar.gz https://terraform-docs.io/dl/v${TERRAFORM_DOCS_VERSION}/terraform-docs-v${TERRAFORM_DOCS_VERSION}-$(uname)-amd64.tar.gz
+  tar -xzf /tmp/terraform-docs.tar.gz --directory /usr/bin
+  chmod +x /usr/bin/terraform-docs
+}
+
 # @function: TerraformInstall
 # @description: Retorna todas versões que foram instalados no container na variável global TerraformVersionsPath declarada.
 # @arg: TerraformArchitecture
@@ -112,6 +123,7 @@ function TerraformVersionExists() {
   # Se não existir o binário para a versão selecionada, chama a função para instalação do Terraform.
   if [ ! -e "${TerraformVersionsPath}/${TerraformVersion}/terraform" ]; then
     TerraformInstall ${TerraformVersion}
+    TerraformDocsInstall
   fi
 }
 
@@ -186,6 +198,7 @@ function TerraformGetCurrentWorkspace() {
     # Caso não seja encontrado o binário do Terraform, é feito o download na versão do arquivo versions.tf.
     if [ ! -e "${TerraformVersionsPath}/${TerraformVersion}/terraform" ]; then
       TerraformInstall ${TerraformVersion}
+      TerraformDocsInstall
     fi
 
     # Cria o atalho para a versão correspondente.
