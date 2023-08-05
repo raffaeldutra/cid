@@ -4,12 +4,30 @@ source ~/.bash_aliases
 
 source install-packages.sh
 
-install_aws
-install_kubectl
-install_helm
-install_istioctl
-install_kustomize
-install_argo
+if [ -n "${AWS_CLI_VERSION}" ]; then
+  install_aws
+fi
+
+if [ -n "${KUBECTL_VERSION}" ]; then
+  install_kubectl
+fi
+
+if [ -n "${KUBECTL_VERSION}" ]; then
+  install_helm
+fi
+
+if [ -n "${KUBECTL_VERSION}" ]; then
+  install_istioctl
+fi
+
+if [ -n "${KUBECTL_VERSION}" ]; then
+  install_kustomize
+fi
+
+if [ -n "${KUBECTL_VERSION}" ]; then
+  install_argo
+fi
+
 show_versions
 
 > ${ENV_DIRECTORY_INSTALLATION}/.finished
