@@ -12,19 +12,19 @@ if [ -n "${KUBECTL_VERSION}" ]; then
   install_kubectl
 fi
 
-if [ -n "${KUBECTL_VERSION}" ]; then
+if [ -n "${HELM_VERSION}" ]; then
   install_helm
 fi
 
-if [ -n "${KUBECTL_VERSION}" ]; then
+if [ -n "${ISTIOCTL_VERSION}" ]; then
   install_istioctl
 fi
 
-if [ -n "${KUBECTL_VERSION}" ]; then
+if [ -n "${KUSTOMIZE_VERSION}" ]; then
   install_kustomize
 fi
 
-if [ -n "${KUBECTL_VERSION}" ]; then
+if [ -n "${ARGO_VERSION}" ]; then
   install_argo
 fi
 
