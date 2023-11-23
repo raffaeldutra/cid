@@ -30,7 +30,7 @@ services:
     env_file:
       - .env.common
       - .env.dev
-      - ../../.credentials/client1-example/envs/env.dev
+      - ./credentials/envs/env.dev
 
     # Arquivos que devem ser tratados como sensíveis devem ser adicionados aqui e mencionados abaixo na seção secrets
     # deste arquivo.
