@@ -53,6 +53,19 @@ function TerraformInitCommand() {
   fi
 }
 
+# @function: TerraformInstallTfLint
+# @description: Faz instalação do tflint. Caso não seja passada a variável de ambiente TFLINT_INSTALL_PATH ou TFLINT_VERSION
+# @description: valores default serão assumidos.
+# @noargs
+# @return: void
+# @exitcode 0 Sucesso
+function TerraformInstallTfLint() {
+  export TFLINT_VERSION=${TFLINT_VERSION:-latest}
+  export TFLINT_INSTALL_PATH=${ENV_DIRECTORY_INSTALLATION}
+
+  curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+}
+
 # @function: TerraformDocsInstall
 # @description: Faz instalação do Terraform Docs
 # @noargs
@@ -97,6 +110,9 @@ function TerraformInstall() {
 
     rm ${TerraformPackage}
   )
+
+  TerraformDocsInstall
+  TerraformInstallTfLint
 }
 
 # @function: TerraformVersionExists
@@ -123,7 +139,6 @@ function TerraformVersionExists() {
   # Se não existir o binário para a versão selecionada, chama a função para instalação do Terraform.
   if [ ! -e "${TerraformVersionsPath}/${TerraformVersion}/terraform" ]; then
     TerraformInstall ${TerraformVersion}
-    TerraformDocsInstall
   fi
 }
 
@@ -195,10 +210,9 @@ function TerraformGetCurrentWorkspace() {
       sed -e 's/[ "\,\r$\s>=]//g'
     )"
 
-    # Caso não seja encontrado o binário do Terraform, é feito o download na versão do arquivo versions.tf.
+    # Se não existir o binário para a versão selecionada, chama a função para instalação do Terraform.
     if [ ! -e "${TerraformVersionsPath}/${TerraformVersion}/terraform" ]; then
       TerraformInstall ${TerraformVersion}
-      TerraformDocsInstall
     fi
 
     # Cria o atalho para a versão correspondente.

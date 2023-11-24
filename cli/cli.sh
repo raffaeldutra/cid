@@ -164,6 +164,7 @@ Funções para Terraform
   ${CLI_ALIAS} -tsc 1.3.5
 
   -tsiv    | TerraformShowInstalledVersions                 Mostra versões que estão baixadas no ambiente
+  -titl    | TerraformInstallTfLint                         Faz instalação do Tflint
 EOT
 }
 
@@ -433,6 +434,8 @@ case "$1" in
             TerraformSetVersion ${2} ;;
           -tsiv    )
             TerraformShowInstalledVersions ;;
+          -titl    )
+            TerraformInstallTfLint ;;
         esac
       fi
     done
