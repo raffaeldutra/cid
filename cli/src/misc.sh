@@ -15,3 +15,12 @@ function JokeChuckNorris() {
 function JokeJoke() {
   curl -s https://icanhazdadjoke.com/ | jq -r '.joke'
 }
+
+# @function: TerraformInstallCheckov
+# @description: Instala Checkov para análise de código em Terraform/Cloudformation
+# @noargs
+# @return: void
+# @exitcode 0 Sucesso
+function TerraformInstallCheckov() {
+  pip3 install checkov
+}
